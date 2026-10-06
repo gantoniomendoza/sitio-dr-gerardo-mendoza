@@ -13,4 +13,3 @@ Cloudflare → Workers & Pages → proyecto → Settings → Variables and Secre
 - Binding opcional `IG_KV` (KV) para renovar el token automáticamente.
 
 Para pruebas locales crea un `.dev.vars` con `INSTAGRAM_TOKEN=...` (ya está en `.gitignore`).
-Deployment actualizado
