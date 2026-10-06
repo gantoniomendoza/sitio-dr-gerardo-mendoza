@@ -391,6 +391,66 @@ body,.stage{background:var(--grain),var(--bg)}
 .ct .where{position:relative}
 .ct .where::before{content:"";position:absolute;left:0;top:calc(-3.4*var(--u));width:calc(52*var(--u));height:1px;background:rgba(15,20,25,.1)}
 
+
+/* ---------- MÓVIL: recomposición a pantalla completa (teléfonos en vertical, ≤760 px). El escritorio y la tablet no se tocan. ----------
+   Mismo lenguaje (crema, Montserrat/Inter, negro + teal + terracota); cada página se vuelve a repartir para usar ancho y alto reales. */
+@media (max-width:760px){
+@container (max-aspect-ratio:1/1){
+/* PORTADA: nombre a todo el ancho, fotografía a sangre que ocupa el resto de la altura, firma clínica debajo */
+.home{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;align-content:stretch;height:100%;padding-bottom:max(0px,calc(50px - 6 * var(--u)))}
+.home .lab{grid-column:1;grid-row:1;margin:0 0 2.6cqw;font-size:max(11.5px,3.2cqw)}
+.home h1{grid-column:1;grid-row:2;margin:0;font-size:calc((100cqw - 12 * var(--u)) / 5.1);line-height:.95}
+.home .photo,.photo.hero{grid-column:1;grid-row:3;align-self:stretch;justify-self:stretch;margin:1.5cqw calc(-6 * var(--u)) 0;width:auto;height:auto;aspect-ratio:auto;min-height:0}
+.home .info{grid-column:1;grid-row:4;margin:1cqw 0 0;padding:0}
+.home .info h2{font-size:7cqw;line-height:1.08}
+.home .areas{margin-top:2.4cqw;font-size:4.3cqw}
+/* PAUSA: el título arriba, la voz clínica abajo; el vacío del medio es una pausa, no un hueco */
+.story{justify-content:center;padding-bottom:max(0px,calc(50px - 6 * var(--u)))}
+.story h2{font-size:13cqw;line-height:1.08}
+.story .rule{width:12cqw;margin:12cqw 0 8cqw}
+.story p{font-size:4.7cqw;line-height:1.55}
+.story p+p{margin-top:6cqw}
+/* ¿EN QUÉ PUEDO AYUDARTE?: mismo motor; en móvil el grupo reparte mejor la altura y la información se lee cómoda */
+.cols{--kmax:1.18;--kcap:1.2;--gapf:1.7}
+.col .i{font-size:clamp(15px,4.4cqw,19px)}
+.col .i b,.col .i .c{white-space:normal;max-width:100%}
+/* MI FORMACIÓN: logos y titulares con más jerarquía, repartidos por toda la altura */
+.ab{--lh:clamp(38px,min(15.5cqw,8.2cqh),76px);--lc:calc(var(--lh) * 2.25 + 10px);--t:clamp(15px,4.6cqw,20px)}
+.gp,.gp.on{column-gap:clamp(10px,3.2cqw,18px);padding:clamp(8px,1.5cqh,16px) 0}
+.inf .ls{font-size:clamp(12.5px,min(4cqw,2.6cqh),16.5px)}
+.inf .yr{font-size:clamp(12.5px,min(4.1cqw,2.6cqh),16.5px)}
+.inf.on .ls{max-height:130px}.inf.on .yr{max-height:36px}
+.blk-a .lab{font-size:clamp(12px,3.5cqw,15px)}
+.agh{font-size:clamp(11.5px,3.2cqw,13.5px)}
+.acs .lgi{height:calc(var(--h) * clamp(3.2px,1.02cqw,4.8px))}
+.at b{font-size:clamp(14.5px,4.2cqw,18px)}.at span{font-size:clamp(13px,3.6cqw,15.5px)}
+/* ARTÍCULOS: solo lo necesario: legibilidad mínima de textos pequeños y reserva sobre las flechas */
+.arts .head p{font-size:max(11.5px,3.4cqw)}.card h3{font-size:max(11.5px,3.5cqw)}
+.arts{padding-bottom:max(0px,calc(50px - 6 * var(--u)))}
+.card .dt,.card .ig{font-size:max(12px,3.1cqw)}
+/* PACIENTES: titular con más presencia; sin testimonios el titular se centra en la pantalla; con testimonios, citas más grandes */
+.pac:not(:has(.q)){grid-template-rows:auto;align-content:center}
+.q blockquote{font-size:6.2cqw}.q cite{font-size:3.8cqw}
+/* CONTACTO: titular, WhatsApp y sedes con presencia táctil */
+.ct{padding-bottom:max(0px,calc(50px - 6 * var(--u)))}
+.ct h1{font-size:min(12cqw,6.6cqh);line-height:1.04}
+.ct .rule{width:10cqw;margin:min(8cqw,4.6cqh) 0 min(7cqw,4cqh)}
+.walink h3{font-size:max(11.5px,3.5cqw);margin-bottom:2.2cqw}.wi{width:4.4cqw;height:4.4cqw}
+.num{font-size:min(9.4cqw,5.2cqh)}
+.where{margin-top:min(11cqw,6cqh);font-size:max(12px,3.2cqw)}
+.locs{margin-top:min(3cqw,1.8cqh);gap:min(3cqw,1.8cqh)}
+.sd2 b{font-size:min(5.6cqw,3.5cqh)}.sd2 span{font-size:max(12px,min(4.1cqw,2.6cqh))}
+}
+/* pantallas muy bajas (≈320×568): se conservan las medidas compactas anteriores para que todo siga cabiendo */
+@container (max-aspect-ratio:1/1) and (max-height:560px){
+.ab{--lh:clamp(36px,min(13.5cqw,8cqh),62px);--t:clamp(14px,4.3cqw,17px)}
+.gp,.gp.on{padding:clamp(5px,1cqh,12px) 0}
+.inf .ls{font-size:clamp(12px,3.5cqw,14px)}.inf .yr{font-size:clamp(12.5px,3.6cqw,14px)}
+.inf.on .ls{max-height:90px}.inf.on .yr{max-height:32px}
+.blk-a .lab{font-size:clamp(11.5px,3.1cqw,13px)}
+.at b{font-size:clamp(13.5px,3.9cqw,16px)}.at span{font-size:clamp(12px,3.4cqw,14px)}
+}
+}
 </style>
 </head>
 <body>
@@ -498,7 +558,7 @@ function initHelp(){
      hace crecer a una de ellas con un resorte ligeramente elástico; el grupo, centrado, ocupa más espacio hacia la periferia. */
   const root=document.querySelector('.cols');if(!root)return;
   const area=root.closest('.help'),frame=document.getElementById('frame'),cols=[...root.querySelectorAll('.col')];
-  const LH=.78,KMAX=1.26,KCAP=1.29,KMIN=.94,A=KMAX-1,B=1-KMIN,OM=11,ZETA=.78,GAPF=.34;
+  const LH=.78,KMIN=.94,B=1-KMIN,OM=11,ZETA=.78;let KMAX=1.26,KCAP=1.29,GAPF=.34,A=KMAX-1;
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const st=cols.map(c=>({c,w:c.querySelector('.w'),i:c.querySelector('.i'),w100:0,k:1,v:0,t:1,s:0,on:false}));
   let f0=40,pitch0=60,rest=[],pinned=null,forced=null,ptr=null,raf=0,last=0;
@@ -513,6 +573,7 @@ function initHelp(){
     const fr=frame.getBoundingClientRect(),hp=area.getBoundingClientRect(),hd=area.querySelector('.hd').getBoundingClientRect();
     const I=Math.max(0,hd.bottom-fr.top+14);
     root.style.top=(I-(hp.top-fr.top)).toFixed(1)+'px';root.style.bottom=(I-(fr.bottom-hp.bottom)).toFixed(1)+'px';
+    const rcs=getComputedStyle(root),cv=(n,d)=>parseFloat(rcs.getPropertyValue(n))||d;KMAX=cv('--kmax',1.26);KCAP=cv('--kcap',1.29);GAPF=cv('--gapf',.34);A=KMAX-1;   /* variables opcionales: el móvil las redefine en CSS */
     const W=root.clientWidth,H=root.clientHeight;if(!W||!H)return;
     st.forEach(o=>{const cur=parseFloat(getComputedStyle(o.w).fontSize)||100;o.w100=o.w.getBoundingClientRect().width/cur*100});
     const wmax=Math.max(...st.map(o=>o.w100));if(!wmax)return;
