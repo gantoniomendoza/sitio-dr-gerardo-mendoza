@@ -42,3 +42,6 @@ Sin variables, la sección muestra un estado vacío discreto: no se inventa cont
 ## v84 — sin pantalla de bienvenida
 - Se eliminó por completo la pantalla «Bienvenido» (elemento #intro, estilos, `playIntro`/`endIntro`, temporizador y llamada en `render()`). No se recuperó el video del logo.
 - La portada aparece con una transición breve (≈0,9 s: fotografía en fundido, textos con ligero ascenso escalonado) solo en la carga inicial, mediante la clase temporal `body.boot` (se retira a los 1,1 s). No se repite al cambiar de sección; con movimiento reducido no hay animación.
+
+## v85 — portada
+- Se eliminó únicamente `<p class="areas">Hombro · Rodilla · Cadera · Trauma</p>` de la portada (`.home .info`). Sin otros cambios; las reglas CSS `.areas` quedan sin uso.
