@@ -22,3 +22,23 @@ Proveedor B (sin paginación; Google entrega como máximo 5 reseñas por lugar):
 - `GOOGLE_PLACES_KEY` (Secret) · `GOOGLE_PLACE_ID`
 
 Sin variables, la sección muestra un estado vacío discreto: no se inventa contenido.
+
+## v81 — «Mi formación»: presentación automática
+- Secuencia al entrar a la sección (~12 s, sin botones ni instrucciones): logo con destello metálico e iluminación → trayectoria en 4 secciones → repliegue hacia el logo, que queda reducido y centrado.
+- Si la persona se desplaza o toca el panel, la animación se detiene y la trayectoria queda completa con desplazamiento normal. Al volver a la sección solo se reproduce el logo (versión breve). Tocar el logo repite la secuencia.
+- `prefers-reduced-motion`: se muestra la trayectoria completa sin animación.
+- Datos: solo los existentes (TESORO / CINTA). Pendientes de revisión (atributo `data-pendiente` en el HTML): congresos, cursos y talleres, formación técnica y EMC; trabajos presentados y ponencias; confirmar el tipo de afiliación de CMOT y otras membresías verificables. Las secciones sin datos muestran «Información en actualización».
+- Se retiraron de Mi formación: botón «Cerrar», pista «Desliza para explorar», rótulo «Mi formación» temporal y píldora «Desliza a la siguiente página». La barra horizontal se conserva.
+
+## v82 — logos de sociedades en la secuencia
+- CMOT, FEMECOT e ISAKOS aparecen automáticamente (fila horizontal, entrada escalonada) justo después del logo personal y antes de las cuatro secciones. Usan los archivos originales ya incluidos en el proyecto, sin alterarlos.
+- La barra horizontal de actividad académica se conserva independiente.
+
+## v83 — bienvenida, logos junto a su dato, CMOT transparente
+- La intro del logo se sustituyó por «Bienvenido» (1 s en total, una vez por visita, sin logo ni video; se omite con movimiento reducido). La portada ya está montada debajo, sin pantalla vacía.
+- Se eliminó la fila superior de logos. Cada logo va a la izquierda de su dato (IPN/ESM, IMSS/UAQ, ABC/OrtoMove, FEMECOT, ISAKOS, CMOT); en pantallas < 340 px se apila. Tamaño según proporción original.
+- CMOT: el rectángulo venía de la propia imagen (PNG blanco sobre fondo oscuro, no del CSS). Se genera transparencia real por luminosidad y el trazo se pinta en carbón #0F1419 (el original es blanco, no sirve sobre marfil). Si hay una versión oficial a color con fondo transparente, sustituir `LOGO_DATA.cmot`.
+
+## v84 — sin pantalla de bienvenida
+- Se eliminó por completo la pantalla «Bienvenido» (elemento #intro, estilos, `playIntro`/`endIntro`, temporizador y llamada en `render()`). No se recuperó el video del logo.
+- La portada aparece con una transición breve (≈0,9 s: fotografía en fundido, textos con ligero ascenso escalonado) solo en la carga inicial, mediante la clase temporal `body.boot` (se retira a los 1,1 s). No se repite al cambiar de sección; con movimiento reducido no hay animación.
