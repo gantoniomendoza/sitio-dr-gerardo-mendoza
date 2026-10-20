@@ -45,3 +45,8 @@ Sin variables, la sección muestra un estado vacío discreto: no se inventa cont
 
 ## v85 — portada
 - Se eliminó únicamente `<p class="areas">Hombro · Rodilla · Cadera · Trauma</p>` de la portada (`.home .info`). Sin otros cambios; las reglas CSS `.areas` quedan sin uso.
+
+## v86 — Mi formación: reinicio determinista y sin barra duplicada
+- Se eliminó la barra horizontal giratoria (marcado, JS de la cinta, estilos y animaciones). La información de CMOT, FEMECOT e ISAKOS vive solo en el menú de Mi formación.
+- Cada entrada a la sección reinicia la secuencia desde la fase A (logo, ~17 % más rápida con los mismos efectos), pasa a la fase B (el logo sube y la trayectoria se integra) y termina en la fase C: menú completo con desplazamiento vertical, sin tocar nada. `render()` llama a `root._enter()` en cada entrada; `root._reset()` cancela temporizadores y limpia estados al salir. Ya no hay versión «breve», repliegue ni estado de botón (el logo dejó de ser un `<button>`).
+- Si la persona interactúa durante la fase B, el menú completo aparece de inmediato.
