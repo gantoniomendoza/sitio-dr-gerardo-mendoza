@@ -639,6 +639,10 @@ article.arts .card h3{font-size:max(13px,calc(2.7*var(--u)))}article.arts .feat 
 article.pac{grid-template-rows:minmax(0,1fr)}
 article.pac .quotes{display:block;min-height:0}
 .rvlist{display:flex;flex-direction:column;gap:calc(4.2*var(--u))}
+/* widget de reseñas de Google (SociableKit): ocupa el ancho de la columna, sin desbordar ni fondo propio */
+.rvw{display:none;width:100%;min-height:calc(24*var(--u));overflow-x:hidden;background:transparent;color:var(--ink)}
+.rvw[data-on]{display:block}
+.rvw *{max-width:100%}
 .rv{margin:0;border-top:1px solid var(--line);padding-top:calc(2.2*var(--u));display:flex;flex-direction:column;gap:calc(1.6*var(--u));justify-content:flex-start}
 .rv:first-child{border-color:var(--terra)}
 .rv .st{font-size:max(13px,calc(2.2*var(--u)));letter-spacing:.14em;color:var(--terra);line-height:1}
@@ -650,7 +654,7 @@ article.pac .quotes{display:block;min-height:0}
 .rv .src{font:400 max(10px,calc(1.3*var(--u)))/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .rvsrc{font:400 max(10px,calc(1.3*var(--u)))/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-top:calc(2*var(--u))}
 .rvsrc[hidden]{display:none}
-article.pac:not(:has(.rv)){grid-template-rows:auto;align-content:center}
+article.pac:not(:has(.rv)):not(:has(.rvw[data-on])){grid-template-rows:auto;align-content:center}
 @container (min-aspect-ratio:1/1){
 article.arts .feat .card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);column-gap:calc(4*var(--u));align-items:end;grid-template-rows:auto auto 1fr auto}
 article.arts .feat .card .photo{grid-column:1;grid-row:1/5;aspect-ratio:16/10}
@@ -664,7 +668,7 @@ article.arts .card h3{font-size:max(13px,3.7cqw)}article.arts .feat .card h3{fon
 article.arts .feat .card .photo{aspect-ratio:4/3}
 .rv blockquote{font-size:max(16px,4.6cqw)}.rv cite{font-size:max(12.5px,3.4cqw)}.rv .st{font-size:max(14px,4cqw)}.rv .src,.rvsrc{font-size:max(10.5px,2.8cqw)}
 article.pac{grid-template-rows:auto minmax(0,1fr)}
-article.pac:not(:has(.rv)){grid-template-rows:auto}
+article.pac:not(:has(.rv)):not(:has(.rvw[data-on])){grid-template-rows:auto}
 }
 /* CONTACTO v68: mismo panel (tamaño, color, posición); solo el texto baja ~12 % y gana respiración en móvil */
 @container (max-aspect-ratio:1/1){
@@ -1553,7 +1557,16 @@ function loadReviews(){
   infiniteFeed({scroller:sc,sentinel:document.getElementById('rvEnd'),loader:document.getElementById('rvLd'),endpoint:CONFIG.reviewsEndpoint,key:'reviews',limit:6,
     accept:r=>r&&r.source==='google'&&r.rating>=4&&r.rating<=5&&r.id,id:r=>r.id,
     append:items=>{list.insertAdjacentHTML('beforeend',items.map(rvCard).join(''));const g=document.getElementById('rvSrc');if(g)g.hidden=false},
-    empty:()=>feedNote(sc,list,'Todavía no hay reseñas para mostrar.'),fail:()=>feedNote(sc,list,'Las reseñas no están disponibles en este momento.')}).start();
+    empty:()=>rvWidget(sc),fail:()=>rvWidget(sc)}).start();
+}
+/* Widget de reseñas de Google (SociableKit). Sustituye al aviso «Todavía no hay reseñas» SOLO cuando /api/reviews no devolvió reseñas propias, así nunca se muestran dos listas ni reseñas repetidas. El script de terceros se carga una sola vez y solo cuando la sección es visible. */
+let rvWidgetOn=false;
+function rvWidget(sc){
+  if(rvWidgetOn)return;rvWidgetOn=true;sc.dataset.msg='1';
+  const box=document.getElementById('rvWidget');if(!box)return;
+  box.innerHTML='<div class="sk-ww-google-reviews" data-embed-id="25723631"></div>';box.dataset.on='1';
+  let loaded=false;const load=()=>{if(loaded)return;loaded=true;const s=document.createElement('script');s.src='https://widgets.sociablekit.com/google-reviews/widget.js';s.defer=true;document.body.appendChild(s)};
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();load()}},{rootMargin:'200px'});io.observe(box)}else load();
 }
 
 const TZH=`<div class="tzh tzh-e" aria-hidden="true"><span>Desliza a la siguiente página</span><svg viewBox="0 0 12 12"><path d="M1 6h9M6.5 2.5L10 6l-3.5 3.5"/></svg></div><div class="tzh tzh-p" aria-hidden="true">Mi formación</div>`;
@@ -1600,6 +1613,7 @@ const PAGES=[
    <div class="left"><h2>Lo que dicen<br>mis pacientes.</h2><p class="rvsrc" id="rvSrc" hidden>Reseñas de Google · 4 y 5 estrellas</p></div>
    <div class="quotes feed" id="rvFeed" tabindex="0" aria-label="Reseñas de Google, de la más reciente a la más antigua">
     <div class="rvlist" id="rvList"></div>
+    <div class="rvw" id="rvWidget"></div>
     <div class="feedend" id="rvEnd"><i class="ld" id="rvLd" hidden aria-hidden="true"></i></div>
    </div>
   </article>`},

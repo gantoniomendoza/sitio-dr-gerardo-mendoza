@@ -50,3 +50,8 @@ Sin variables, la sección muestra un estado vacío discreto: no se inventa cont
 - Se eliminó la barra horizontal giratoria (marcado, JS de la cinta, estilos y animaciones). La información de CMOT, FEMECOT e ISAKOS vive solo en el menú de Mi formación.
 - Cada entrada a la sección reinicia la secuencia desde la fase A (logo, ~17 % más rápida con los mismos efectos), pasa a la fase B (el logo sube y la trayectoria se integra) y termina en la fase C: menú completo con desplazamiento vertical, sin tocar nada. `render()` llama a `root._enter()` en cada entrada; `root._reset()` cancela temporizadores y limpia estados al salir. Ya no hay versión «breve», repliegue ni estado de botón (el logo dejó de ser un `<button>`).
 - Si la persona interactúa durante la fase B, el menú completo aparece de inmediato.
+
+## v87 — widget de reseñas de Google (SociableKit)
+- `index.html`: contenedor `#rvWidget` dentro de «Lo que dicen mis pacientes». Si `/api/reviews` no devuelve reseñas propias (hoy responde `not_configured`), se inserta el código del widget (`<div class="sk-ww-google-reviews" data-embed-id="25723631">` + `widgets.sociablekit.com/google-reviews/widget.js`) en lugar del aviso «Todavía no hay reseñas». Si algún día `/api/reviews` devuelve reseñas, se muestran las propias y el widget NO se carga (nunca hay dos listas).
+- El script de terceros se carga una sola vez y solo cuando la sección entra en pantalla. El código anterior de reseñas (backend y frontend) se conserva.
+- Colores, tipografías y fondo del widget se configuran en el panel de SociableKit (fondo transparente, #0F1419 / #1B5E75 / #C77D2C, Montserrat/Inter).
